@@ -1,37 +1,48 @@
+import { format, formatDistanceToNow } from "date-fns";
+import ptBr from "date-fns/locale/pt-BR";
+
 import { Avatar } from "./Avatar";
 import { Comment } from "./Comment";
 import styles from "./Post.module.css";
 
-export function Post() {
+export function Post({ author, publishedAt, content}) {
+  const publishedDateFormatted = format(
+    publishedAt,
+    "dd 'de' LLLL 'às' HH:mm'h'",
+    {
+      locale: ptBr,
+    }
+  );
+
+  const publisedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBr,
+    addSuffix: true,
+  });
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar hasBorder src="https://github.com/maykbrito.png" />
+          <Avatar src={author.avatarUrl} />
           <div className={styles.authorInfo}>
-            <strong>Ronald Joaquim</strong>
-            <span>Web Developer</span>
+            <strong>{author.name} </strong>
+            <span>{author.role} </span>
           </div>
         </div>
 
-        <time title="20 de julho" dateTime="2022-05-11 08:13:30">
-          Públicado há 1h
+        <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+          {publisedDateRelativeToNow}
         </time>
       </header>
       <div className={styles.content}>
-        <p>Fala galeraa 👋</p>
+        {content.map(line => {
+          if(line.type === "paragraph") {
+            return <p>{line.content}</p>;
+          } else if (line.type === "link") {
+            return <p><a href="">{line.content}</a></p>;
+          }
+        })}
 
-        <p>
-          Acabei de subir mais um projeto no meu portfolio. É um projeto que fiz
-          no Ignite. O nome do projeto é Feed devExpress 🚀
-        </p>
-        <p>
-          <a href="">jane.design/doctorcare</a>
-        </p>
-        <p>
-          <a href="">#novoprojeto</a> <a href="">#nlw</a>{" "}
-          <a href="">#rocketseat</a>
-        </p>
       </div>
 
       <form className={styles.commentForm}>
