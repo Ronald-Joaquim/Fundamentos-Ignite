@@ -18,13 +18,11 @@ const posts = [
       { type: "paragraph", content: "Hi Ronald 👋" },
       {
         type: "paragraph",
-        content:
-          "This project is fire 🔥, congrats for Feed devExpress 🚀",
+        content: "This project is fire 🔥, congrats for Feed devExpress 🚀",
       },
       {
         type: "paragraph",
-        content:
-          "Só não tenta roubar o lugar da minha rede social 😆",
+        content: "Só não tenta roubar o lugar da minha rede social 😆",
       },
     ],
     publishedAt: new Date("2023-07-22 14:00:00"),
@@ -60,6 +58,7 @@ export function App() {
           {posts.map((post) => {
             return (
               <Post
+                key={post.id}
                 author={post.author}
                 content={post.content}
                 publishedAt={post.publishedAt}
